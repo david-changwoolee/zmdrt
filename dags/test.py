@@ -46,10 +46,14 @@ default_args = {
 }
 
 def _test():
+    os.system("pwd")
+    os.system("ls ../*")
+    '''
     home = os.getcwd()
     print(read(home+"/conf/apis.json"))
     write(home+"/conf/home_path.txt", home)
     print(read(home+"/conf/home_path.txt"))
+    '''
 
 with DAG("test", start_date=datetime(2022, 6, 2),
     schedule_interval="00 * * * *", default_args=default_args, catchup=False) as dag:
