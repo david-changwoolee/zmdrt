@@ -1,6 +1,8 @@
+import os
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 from datetime import datetime, timedelta
+from lib.zumdart_lib import read, write
 
 default_args = {
     "owner": "changwoolee",
@@ -12,8 +14,10 @@ default_args = {
 }
 
 def _test():
-    import platform
-    print("python version : {}".format(platform.python_version()))
+    home = os.getcwd()+"/../"
+    print(read(home+"conf/apis.json"))
+    write(home+"conf/home_path.txt", home)
+    print(read(home+"conf/home_path.txt"))
 
 with DAG("test", start_date=datetime(2022, 6, 2),
     schedule_interval="00 * * * *", default_args=default_args, catchup=False) as dag:
@@ -22,5 +26,3 @@ with DAG("test", start_date=datetime(2022, 6, 2),
         task_id="test",
         python_callable=_test,
     )
-
-_test()
